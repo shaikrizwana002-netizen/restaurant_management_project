@@ -1,16 +1,14 @@
-body {
-    font.family: 'Segoe UI', sans_serif;
-    background_color; #f9f9f9;
-    color: #333
-    margin: 0;
-    padding: 0;
-    }
-    header {
-        background_color: #4CAFSO;
-        color: white;
-        padding: 20px;
-        text_align: center;
-        }
-        main {
-             padding: 20px;
-        }
+body
+{
+    font_family: 'Segoe UI', Tahoma
+    background_color: #f4f6f8;
+    color: #333;
+    line_height: 1.6;
+    padding: 20px;
+}
+main{
+    display: grid;
+    grid_templet_columns: 1fr 3fr;
+    gap: 20px;
+    margin_top: 20px;
+}
