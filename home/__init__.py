@@ -22,6 +22,6 @@
 </html>
  def menu_view(request):
     menu_items = ['pizza', 'burger', 'psata', 'salad', 'cake']
-    return rendor(request, 'menu.html', {'menu_items': menu_items})
+    return render(request, 'menu.html', {'menu_items': menu_items})
 
 menu_items = Menu_items.pbjects.all()
