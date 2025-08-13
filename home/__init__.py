@@ -2,26 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF_8">
-<title>Menu Items</title>
+<title>Contact Us</title>
 <style>
   body { font_family: 'Arial, sans_serif; padding: 20px; }
-  ul { list_style_type: none; padding:0; }
-  li { padding: 10px; border_bottom: 1px solid}
-</style>
+ .contact_box {max_width: 500px: margin:auto; border: 1px solid #ccc; padding: 15px; border_radius: 8px; }
+ hi { text_align: center; }
+ p {margin: 10px 0;}
+ </style>
 </head>
 <body>
-<h1>Menu</h1>
-<ul>
-  <li>🍕 Pizza</li>
-  <li>🍔 Burger</li>
-  <li>🥗 salad</li>
-  <li>🍝 Pasta</li>
-  <li>🍰 Cake</li>
-</ul>
+  <div class="contact_box>
+      <h1>Contact Us</h1>
+      <p><strong>Company:</strong> {{ contact_info.company_name }}<p/>
+      <p><strong>Email:</strong> {{contact_info.email }}</p>
+      <p><strong>Phone:</strong> {{ company_phone }}</p>
+      <p><strong>Address:</strong> {{ company_address }}</p>
+  </div>
 </body>
 </html>
- def menu_view(request):
-    menu_items = ['pizza', 'burger', 'psata', 'salad', 'cake']
-    return render(request, 'menu.html', {'menu_items': menu_items})
-
-menu_items = Menu_items.pbjects.all()
