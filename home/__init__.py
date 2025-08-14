@@ -2,21 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF_8">
-<title>Contact Us</title>
+<meta name="Viewport" content="width=device_width, intial_scale=1.0">
+<title>Reservation Page</title>
 <style>
-  body { font_family: 'Arial, sans_serif; padding: 20px; }
- .contact_box {max_width: 500px: margin:auto; border: 1px solid #ccc; padding: 15px; border_radius: 8px; }
- hi { text_align: center; }
- p {margin: 10px 0;}
+  body {
+     font_family: sans_serif; 
+     display: flex;
+     justify_content: center;
+     align_items: center;
+     min_height: 100vh;
+     margin: 0;
+     background_color: #f0f0f0;
+     }
+     .reservation_container {
+        background_color: #fff;
+        padding: 30px;
+        border_radius: 8px;
+        box_shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
+        text_align: center;
+     }    
+     h1 {
+        color: #333;
+     }
+      p{
+        color: #666;
+        font_size: 1.1em;
+      }
+ 
  </style>
 </head>
 <body>
-  <div class="contact_box>
-      <h1>Contact Us</h1>
-      <p><strong>Company:</strong> {{ contact_info.company_name }}<p/>
-      <p><strong>Email:</strong> {{contact_info.email }}</p>
-      <p><strong>Phone:</strong> {{ company_phone }}</p>
-      <p><strong>Address:</strong> {{ company_address }}</p>
+     <div class="reservation_container">
+    <h1>Reservation System</h1>
+    <p>This is a placeholder for the reservation form. Please check back later for updates!</p>
   </div>
 </body>
 </html>
