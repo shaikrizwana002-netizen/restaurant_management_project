@@ -18,7 +18,7 @@
         background_color: #fff;
         padding: 30px;
         border_radius: 8px;
-        box_shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
+        box_shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         text_align: center;
      }    
      h1 {
