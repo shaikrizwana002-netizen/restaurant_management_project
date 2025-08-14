@@ -1,4 +1,4 @@
-<footer style="text-align: center; padding: 10px; backgroun-color: #f2f2f2;
+<footer style="text-align: center; padding: 10px; background-color: #f2f2f2;
   &copy; <span id="year"></span> Your Company Name. All rights reserved.
   </footer>
 
