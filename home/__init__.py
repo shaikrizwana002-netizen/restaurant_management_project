@@ -17,5 +17,5 @@ document.getElementById("contactForm").addEventListener("submit", function (even
         alert("Please fill in  both name and email field.");
         event.preventDefault(); // Prevent form submission
     }
-});
+  });  
 </script>
