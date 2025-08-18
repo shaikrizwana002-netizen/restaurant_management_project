@@ -1,5 +1,3 @@
-<form action="/submit=feedback" method="POST">
-  <label for="comments">Your feedback:</label><br>
-  <textarea id="comments" name="comments" rows="5" cols="40" required></textarea><br>
-  <button type="submit">Submit</button>
-</form>
+<footer style="text-align: center; padding: 20px; background-color: #f2f2f2;">
+  <p>&copy; 2025 The Gourmet Spot. All rights reserved.</p>
+</footer>  
