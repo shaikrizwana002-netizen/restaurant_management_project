@@ -1,3 +1,5 @@
-<footer>
-  <p>Opening Hours: Mon-Fri: 11am_9pm,Sat_Sun:10am-10pm</p>
-  </footer>
+<form action="/submit=feedback" method="POST">
+  <label for="comments">Your feedback:</label><br>
+  <textarea id="comments" name="comments" rows="5" cols="40" required></textarea><br>
+  <button type="submit">Submit</button>
+</form>
