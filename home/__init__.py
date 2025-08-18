@@ -6,10 +6,10 @@
 <input type="email" id="email" name="email" />
 
 <button type="submit">Submit</button>
-</from>
+</form>
 
 <script>
-document.getElementById("contactForm").addEventListener("submit", function (even) {
+document.getElementById("contactForm").addEventListener("submit", function (event) {
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
 
