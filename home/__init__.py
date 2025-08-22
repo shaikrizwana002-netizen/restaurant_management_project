@@ -1,24 +1,8 @@
-# menu/views.py
-from rest_framework.views import
-from rest_framework.response import
+class MenuAdmin(admin.ModelAdmin):
+   list_display = ('name', 'price', 'available') # Customize fields shown
 
-class MenuView(APIView):
-    def get(self, request):
-        menu = [
-            {
-                "name": "Margherita pizza", 
-                "description": "Classical pizza with tomato sauce, mozzarella, and basil.",
-                "price": "8.99"
-                },
-                {
-                "name": "Caesar Salad",
-                "description": "Romaine lettuce eith Ceasar dressing, croutons, and parmesan.",
-                "price": 6.50
-                },
-                {
-                "name": "Spaghetti Carbonara",
-                "description": "Pasta with eggs, cheese, pancetta, and pepper",
-                "price": 10.75
-            }
-        ]     
-        return Response(menu)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('customer_name', 'menu_item', 'quantity', 'status')
+
+    admin.site.register(Menu, MenuAdmin)
+    admin.site.register(order.OrderAdmin)   
