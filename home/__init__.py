@@ -14,7 +14,7 @@ class Order(models.Models):
         ('DELIVERED', 'delivered'),
         ('CANCELED', 'canceled'),
     ]        
-    customer = model.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     order_items = models.ManyToManyField(MenuItem, related_name='orders')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     order_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
