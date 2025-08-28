@@ -42,7 +42,7 @@ urlpatterns = [
 <!-- homepage.html -->
 <h2>Contact Us</h2>
 <form method="post">
-   {% csrf-token %}
+   {%csrf-token%}
    {{ form.as_p }}
    <button type="submit">Submit</button>
    </form>
