@@ -8,7 +8,7 @@ class RestaurantInfo(models.Models):
 
 # views.py
 from django.conf import settings
-settingsfrom django.shortcuts import render    
+from django.shortcuts import render    
 
 def homepage(request):
     address = settings.RESTAURANT_ADDRESS
