@@ -6,7 +6,7 @@ class   modelsenuItem(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
-    def --str--(self):
+    def__str__(self):
         return self.name
 
 # views.py
