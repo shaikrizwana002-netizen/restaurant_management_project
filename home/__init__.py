@@ -7,7 +7,7 @@ class RestaurantInfo(models.Models):
     address = models.CharField(max_length=255)
 
 # views.py
-from django.conf import 
+from django.conf import settings
 settingsfrom django.shortcuts import render    
 
 def homepage(request):
