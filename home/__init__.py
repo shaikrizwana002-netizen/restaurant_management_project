@@ -28,4 +28,21 @@ def homepage(request):
             return redirect('homepage') # or show a success message
     else:
         form = ContactForm()
-        return render(request, 'homepage.html', {'form': form})        
+        return render(request, 'homepage.html', {'form': form}) 
+
+
+# urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [ 
+    path('', views.homepage, name='homepage'),
+]
+
+<!-- homepage.html -->
+<h2>Contact Us</h2>
+<form method="post">
+   {% csrf-token %}
+   {{ form.as_p }}
+   <button type="submit">Submit</button>
+   </form>
