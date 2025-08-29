@@ -1,10 +1,8 @@
 from django.db import models
 
-class RestaurantLocation(models.Model):
-    address = models.CharField(max_length=100)
-    city = models.CharField(max=length=50)
-    state = models.CharField(max_length=15)
-    zip_code = models.CharField(max_length=10)
+class ContactSubmission(models.Model):
+    name = models.CharField(max_length=20)
+    email = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.address}, {self.city}, {self.state}, {self.zip_code}"
+        return f"{self.name}, {self.email}"
