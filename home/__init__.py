@@ -7,7 +7,7 @@ class Restaurant(models.Model):
     def __str__(self):
         return  self.name
 
- from django.shortcuts import rend
+ from django.shortcuts import render
  from .models import Restaurant
         
 def homepage(request):
