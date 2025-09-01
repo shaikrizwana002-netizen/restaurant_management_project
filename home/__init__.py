@@ -11,8 +11,16 @@ class Restaurant(models.Model):
  from .models import Restaurant
         
 def homepage(request):
-    restaurant = Restaurant.objectrestaurant = Restaurant.objects.first()  # or use get(id=1) if you have a specific one
+    restaurant = Restaurant.objectrestaurant = Restaurant.objects.first()  #  Assuming one restaurant
     return render(request, 'homepage.html', {'restaurant': restaurant})       
 
-    <h2>Visit Us</h2>
-    <p>{{ restaurant.address }}</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to our Restaurant>
+</head>
+<body>
+    <h1>{{restaurant.name }}</h1>
+    <p>📍 Address: {{ restaurant.address }}</p>
+</body>
+</html> 
