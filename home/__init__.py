@@ -5,34 +5,17 @@ class ContactForms(models.Model):
     email = models.EmailField()
     message = models.CharField(widget=forms.Textarea)
     
-from django.core.mail import send_mail
-from django.shortcuts import render,redirect
-from .forms import ContactForm
-
-def contact_view(request):
-       form = ContactForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        send_mail(
-            subject=f"Message from {form.cleaned_data['name']}",
-            message=form.cleaned_data['message'],
-            from_email=form.cleaned_data['email'],
-            recipient_list=['yourrestaurant@example.com']
-        )
-        return render(request, 'success.html')
-    return render(request, 'contact.html', {'form': form})
-
-<!__ contact.html __>
-<form method="POST">
-    {% csrf_token %>}
-    {{ form.as_p }}    
-    <button type="submit">Send</button>
+<! __home.html __>
+<form method="get">
+  <input type="text" name="q" " placeholder="Search menu..." value="{{ query }}">
+  <button type="submit"Search</button>
 </form>
 
-<!__ success.html __>
-<p>Thanks! Your message was sent.</p>
+<ul>
+  {% for item in items %}
+    <li><strong>{{ item.name }}</strong>: {{ item.description }}</li>
+  {% empty %}
+    <li>No items found.</li>
+  {% endfor %}
+</ul>
 
-EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'yourrestaurant@example.com'
-EMAIL_HOST_PASSWORD = 'yourpassword'
