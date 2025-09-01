@@ -3,7 +3,7 @@ from django.db import models
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField()
-    opening_hours = models.JSONField(default=dict) # e.g., {"Monday": "9am_9pm,..."}
+    opening_hours = models.JSONField(null=True) # e.g., {"Monday": "9am_9pm,..."}
     def __str__(self):
         return  self.name
 
@@ -11,7 +11,7 @@ class Restaurant(models.Model):
  from home.models import Restaurant
         
 def homepage(request):
-    restaurant = Restaurant.object.restaurant = Restaurant.objects.first()  
+    restaurant = Restaurant.objects.first()  
     return render(request, 'homepage.html', {'restaurant': restaurant})       
 
 <!DOCTYPE html>
