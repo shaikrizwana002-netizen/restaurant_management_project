@@ -1,54 +1,38 @@
 from django.db import models
 
-class MenuItem(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    image = models.ImageField(upload_to='menu_images/', blank=True, null=True)
+class ContactForms(models.Model):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
+    
+from django.core.mail import send_mail
+from django.shortcuts import render,redirect
+from .forms import ContactForm
 
-    def __str__(self):
-        return  self.name
+def contact_view(request):
+       form = ContactForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        send_mail(
+            subject=f"Message from {form.cleaned_data['name']}",
+            message=form.cleaned_data['message'],
+            from_email=form.cleaned_data['email'],
+            recipient_list=['yourrestaurant@example.com']
+        )
+        return render(request, 'success.html')
+    return render(request, 'contact.html', {'form': form})
 
- from django.shortcuts import render
- from home.models import MenuItem
-        
-def homepage(request):
-    restaurant = MenuItem.objects.first()  
-    return render(request, 'homepage.html', {'menu_items': menu_items})       
+<!__ contact.html __>
+<form method="POST">
+    {% csrf_token %>}
+    {{ form.as_p }}    
+    <button type="submit">Send</button>
+</form>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Menu</title>            border: 1px solid #ddd;
+<!__ success.html __>
+<p>Thanks! Your message was sent.</p>
 
-    <style>
-         .menu_items {
-            border: 1px solid #ddd;
-            padding: 1em;
-            margin_bottom: 1em;
-            display: flex;
-            align_items: center;
-            }
-            .menu_items img {
-                max_width: 150px;
-                margin_right:1em;
-                border_radius: 8px;
-            }
-    </style>
-</head>
-<body>
-     <h2>🍽️ Our Menu</h1>
-    {% for item in menu_items %}
-        <div class="menu-item">
-            {% if item.image %}
-                <img src="{{ item.image.url }}" alt="{{ item.name }}">
-            {% endif %}
-            <div>
-                <h2>{{ item.name }}</h2>
-                <p>{{ item.description }}</p>
-                <p><strong>₹{{ item.price }}</strong></p>
-            </div>
-        </div>
-    {% endfor %}
-</body>
-</html>    
+EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'yourrestaurant@example.com'
+EMAIL_HOST_PASSWORD = 'yourpassword'
