@@ -1,9 +1,9 @@
 from django.db import models
 
 class ContactForms(models.Model):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    message = forms.CharField(widget=forms.Textarea)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.CharField(widget=forms.Textarea)
     
 from django.core.mail import send_mail
 from django.shortcuts import render,redirect
