@@ -11,7 +11,7 @@ class Restaurant(models.Model):
  from .models import Restaurant
         
 def homepage(request):
-    restaurant = Restaurant.objectrestaurant = Restaurant.objects.first()  #  Assuming one restaurant
+    restaurant = Restaurant.object.restaurant = Restaurant.objects.first()  #  Assuming one restaurant
     return render(request, 'homepage.html', {'restaurant': restaurant})       
 
 <!DOCTYPE html>
