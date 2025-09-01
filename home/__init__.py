@@ -8,7 +8,7 @@ class Restaurant(models.Model):
         return  self.name
 
  from django.shortcuts import render
- from .models import Restaurant
+ from home.models import Restaurant
         
 def homepage(request):
     restaurant = Restaurant.object.restaurant = Restaurant.objects.first()  #  Assuming one restaurant
