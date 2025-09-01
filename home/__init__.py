@@ -2,55 +2,53 @@ from django.db import models
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
-    address = models.TextField()
-    opening_hours = models.JSONField(null=True) # e.g., {"Monday": "9am_9pm,..."}
+    description = models.TextField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    image = models.ImageField(upload_to='menu_images/', blank=True, null=True)
+
     def __str__(self):
         return  self.name
 
  from django.shortcuts import render
- from home.models import Restaurant
+ from home.models import MenuItem
         
 def homepage(request):
-    restaurant = Restaurant.objects.first()  
-    return render(request, 'homepage.html', {'restaurant': restaurant})       
+    restaurant = MenuItem.objects.first()  
+    return render(request, 'homepage.html', {'menu_items': menu_items})       
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ restaurant.name }}</title>
+    <title>Menu</title>            border: 1px solid #ddd;
+
     <style>
-         .hours {
-            background_color: #f8f8f8;
+         .menu_items {
+            border: 1px solid #ddd;
             padding: 1em;
-            border_radius: 8px;
-            width: fit_content;
-         }
-         .hours h2 {
-            margin_top: 0;
-         }
-    </style>     
+            margin_bottom: 1em;
+            display: flex;
+            align_items: center;
+            }
+            .menu_items img {
+                max_width: 150px;
+                margin_right:1em;
+                border_radius: 8px;
+            }
+    </style>
 </head>
 <body>
-    <h1>{{restaurant.name }}</h1>
-    <p>📍 Address: {{ restaurant.address }}</p>
-    
-    <div class="hours">
-      <h2>🕒 opening Hours</h2>
-      <ul>
-      {% for day, time in restaurant.opening_hours.items %}
-           <li><strong>{{ day }}:</strong> {{ time }}</li>
-           {% endfor %}
-      </ul>
-    </div>
+     <h2>🍽️ Our Menu</h1>
+    {% for item in menu_items %}
+        <div class="menu-item">
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+            {% endif %}
+            <div>
+                <h2>{{ item.name }}</h2>
+                <p>{{ item.description }}</p>
+                <p><strong>₹{{ item.price }}</strong></p>
+            </div>
+        </div>
+    {% endfor %}
 </body>
-</html>
-restaurant.opening_hours = {
-    "Monday": "9am-9pm",
-    "Tuesday": "9am-9pm"'
-    "Wednesday": "9am-9pm",
-    "Thurday": "9am-9pm",
-    "Friday": "9am-11pm",
-    "Saturday": "10am-11pm",
-    "Sunday": "10am-8pm"
-}
-restaurant.save()
+</html>    
