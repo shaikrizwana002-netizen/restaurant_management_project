@@ -1,21 +1,20 @@
 from django.db import models
 
-class ContactForms(models.Model):
+class Restaurant(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
-    message = models.CharField(widget=forms.Textarea)
-    
-<! __home.html __>
-<form method="get">
-  <input type="text" name="q" " placeholder="Search menu..." value="{{ query }}">
-  <button type="submit"Search</button>
-</form>
+    phone_number = models.CharField(max_length=15)
+    def __str__(self):
+       return self.name
 
-<ul>
-  {% for item in items %}
-    <li><strong>{{ item.name }}</strong>: {{ item.description }}</li>
-  {% empty %}
-    <li>No items found.</li>
-  {% endfor %}
-</ul>
+
+<!DOCTYPE.html>
+<html>
+<head>
+    <title>Restaurant Homepage/<title>
+</head>
+<body>
+     <h1>Welcome to {{ restaurant.name }}</h1>
+     <p> Call us at: <strong>{{ restaurant.phone_number }}
+</body>
+</html>    
 
