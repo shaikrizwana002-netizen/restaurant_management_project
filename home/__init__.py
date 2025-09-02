@@ -14,7 +14,7 @@ class Restaurant(models.Model):
 </head>
 <body>
      <h1>Welcome to {{ restaurant.name }}</h1>
-     <p> Call us at: <strong>{{ restaurant.phone_number }}
+     <p> Call us at: <strong>{{ restaurant.phone_number }}</strong></p>
 </body>
 </html>    
 
