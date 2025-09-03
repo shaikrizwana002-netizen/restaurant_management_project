@@ -1,24 +1,27 @@
-from django.db import models
+from django.shortcuts import render
 
-class Restaurant(models.Model):
-    name = models.CharField(max_length=100)
-    logo = models.ImageField(upload_to='logos/')
-    def __str__(self):
-       return self.name
+def about_us(request):
+    context = {
+        'restaurant_name': 'Yummy Restaurant',
+        'history': 'Founded in 2005, Yummy Restaurant began as a small family-run café in Tuni. Over the years, it has grown into a beloved local spot known for its fusion cuisine and warm hospitality.',
+        'mission': 'To serve delicious, wholesome meals that bring people together and celebrate the rich culinary heritage of Andhra Pradesh.'
+    }
+    return render(request, 'about_us.html', context)
 
 
 <!DOCTYPE.html>
 <html>
 <head>
-    <title>{{ restaurant.name }}</title>
+    <title>About Us - {{ restaurant.name }}</title>
 </head>
 <body>
-     <h1>Welcome to {{ restaurant.name }}</h1>
-     {% if restaurant.logo %}
-        <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }}" Logo style="max_width:200px;">
-    {% ielse %}
-         <p>No logo available.</p>
-    {% endif %}
-</body>
+    <h1>Welcome to {{ restaurant_name }}</h1>
+    <h2>Our History</h2>
+    <p>{{ history }}</p>
+    <h2>Our Mission</h2>
+    <p>{{ mission }}</p>
+</body>    
 </html>    
+
+f
 
