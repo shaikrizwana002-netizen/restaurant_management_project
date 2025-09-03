@@ -1,27 +1,11 @@
-from django.shortcuts import render
-
-def about_us(request):
-    context = {
-        'restaurant_name': 'Yummy Restaurant',
-        'history': 'Founded in 2005, Yummy Restaurant began as a small family-run café in Tuni. Over the years, it has grown into a beloved local spot known for its fusion cuisine and warm hospitality.',
-        'mission': 'To serve delicious, wholesome meals that bring people together and celebrate the rich culinary heritage of Andhra Pradesh.'
-    }
-    return render(request, 'about_us.html', context)
+def homepage(request):
+    cart =request.session.get('cart', {})
+    total_items = sum(cart.values())
+    return render(request, 'homepage.html', {'total_items': total_items})
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About Us - {{ restaurant.name }}</title>
-</head>
-<body>
-    <h1>Welcome to {{ restaurant_name }}</h1>
-    <h2>Our History</h2>
-    <p>{{ history }}</p>
-    <h2>Our Mission</h2>
-    <p>{{ mission }}</p>
-</body>    
-</html>    
-
-f
-
+def add_to_cart(request, item_id):
+cart = request.session.get('cart'. {})
+cart[item_id] = cart.get(item_id, 0) + 1
+request.session['cart'] = cart
+return redirect('homepage')
