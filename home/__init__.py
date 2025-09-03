@@ -8,5 +8,5 @@ class ContactForm(forms.Form):
     message = forms.CharField(
         required=True,
         widget=forms.Textarea(attrs={'placeholder': 'Your email'})
-        min_length=10
+        'min_length = 10'
     ) 
