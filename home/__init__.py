@@ -1,4 +1,4 @@
-from django.shortcut import render
+from django.shortcuts import render
 def homepage(request):
     cart =request.session.get('cart', {})
     total_items = sum(cart.values())
