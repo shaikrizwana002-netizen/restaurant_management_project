@@ -4,7 +4,7 @@ def homepage(request):
     return render(request, 'homepage.html', {'total_items': total_items})
 
 
-def add_to_cart(request, item_id):
+def add-to-cart{request, item_id}:
 cart = request.session.get('cart'. {})
 cart[item_id] = cart.get(item_id, 0) + 1
 request.session['cart'] = cart
