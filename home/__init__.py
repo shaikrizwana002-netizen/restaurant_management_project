@@ -1,12 +1,10 @@
-from django import forms
- 
-class ContactForm(forms.Form):
-    email = forms.EmailField(
-        request=True,
-        widget=forms.EmailInput(attrs={'placeholder': 'Your email'})
-    )
-    message = forms.CharField(
-        required=True,
-        widget=forms.Textarea(attrs={'placeholder': 'Your email'})
-        'min_length = 10'
-    ) 
+from django.conf import settings
+
+def homepage(request):
+    phone = settings.RESTAURANT_PHONE
+    return render(request, 'homepage.html', {'phone': phone})
+
+<div class="contact-section">
+    <p class="phone-label"> call Us:</p>
+    <p class ="phone-number">{{ phone }}</p>   
+</div>
