@@ -9,7 +9,7 @@ def home-view(request):
     now = datetime.now()
     context = {
         'current-date': now.date(),
-        'current-time': noe.time(),
+        'current-time': now.time(),
         }
         return render(request, 'home.html', context)
 
