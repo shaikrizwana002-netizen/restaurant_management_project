@@ -19,9 +19,8 @@
     flex-wrap: wrap;
 }  
 
-.breadcrumb a {
+.breadcrumb {
     color: #007bff;
-    text-decoration: none;
 }
 .breadcrumb a:hover { 
     text-decoration: underline;
