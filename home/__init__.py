@@ -1,27 +1,33 @@
-<div class="Welcome-message">
-   <h1>Welcome to Yummy Heaven</h1>
-   <p>Your taste adventure begins here</p>
-</div>
+<nav class="breadcrumb">
+  <a href="/home">Home</a>
+  <span></span>
+  <a href="Projects">Projects</a>
+  <a href="/prijects/tasks">Tasks</a>
+  <span></span>
+  <span class="current">View Tasks</span>
+  </nav>
 
-  <h1>Welcome to Yummy Palace</h1>
-  <p>where flavours meet finesse</p>
+.breadcrumb {
+    font-family: Arial,sans-serif;
+    font-size:14px;
+    margin: 20px 0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #5f5f5;
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+}  
 
-.welcome-message  {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #fff8f0;
-    border-bottom: 2px solid #e0e0e0;
+.breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+}
+.breadcrumb a:hovr { 
+    text-decoration: underline;
 }
 
-.welcome-message h1 {
-    font-size: 2.5em;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.welcome-message p {
-    font-size: 1.2em;
-    color: #666;
-    font-style: italic;
+.breadcrumb .current {
+    color: #555;
+    font-weight: bold;
 }
