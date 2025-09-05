@@ -15,8 +15,8 @@
 <body>
   <h1>Frequently Asked Question</h1>
   <div class="faq-item">
-  <div= class="question">Q: How do I reset my password?</div>
-  <div clas="answer">A: Click on "Forget Password" at login and follow the instruction.</div>
+  <div class="question">Q: How do I reset my password?</div>
+  <div class="answer">A: Click on "Forget Password" at login and follow the instruction.</div>
   </div>
 <div class="faq-item">
   <div class="question">   Q: Can I edit my submission after uploading?</div>
