@@ -7,10 +7,7 @@ from django.shortcuts import render
 from datetime import datetime
 def home-view(request):
     now = datetime.now()
-    context = {
-        'current-date': now.date(),
-        'current-time': now.time(),
-        }
+    context = {'current-date': ..., 'current-time': ...}
         return render(request, 'home.html', context)
 
 from django import template
