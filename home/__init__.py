@@ -23,7 +23,7 @@
     color: #007bff;
     text-decoration: none;
 }
-.breadcrumb a:hovr { 
+.breadcrumb a:hover { 
     text-decoration: underline;
 }
 
