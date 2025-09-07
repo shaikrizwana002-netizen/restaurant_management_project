@@ -1,46 +1,39 @@
+<!-- templates/home.html -->
+<a href="{% url 'place_order' %}" class="order-button">Order Now</a>
+
+.order-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+    background-color: #218838;ass="order-button">Order Now</a>
+}
+
 # urls.py
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
+
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('place-order/', views.place_order, name='place_order'),
 ]
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    {% if form.errors %}
-        <p style="color: red;">Invalid username or password.</p>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <label for="id_username">Username:</label>
-        <input type="text" name="username" id="id_username" required><br>
 
-        <label for="id_password">Password:</label>
-        <input type="password" name="password" id="id_password" required><br>
+ views.py
+from django.shortcuts import render
 
-        <button type="submit">Login</button>
-    </form>
-</body>
-</html>
+def place_order(request):
+    return render(request, 'place_order.html')
 
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <label for="id_username">Username:</label>
-    <input type="text" name="username" id="id_username" required>
+<!-- templates/place_order.html -->
+<h1>Place Your Order</h1>
+<p>This page will allow users to place their orders. Coming soon!</p>
 
-    <label for="id_password">Password:</label>
-    <input type="password" name="password" id="id_password" required>
-
-    <button type="submit">Login</button>
-</form>
-
-# settings.py
-LOGIN_REDIRECT_URL = '/'
