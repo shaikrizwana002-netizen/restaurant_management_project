@@ -34,6 +34,7 @@ def place_order(request):
     return render(request, 'place_order.html')
 
 <!-- templates/place_order.html -->
+return render(request, 'place_order.html')
 <h1>Place Your Order</h1>
 <p>This page will allow users to place their orders. Coming soon!</p>
 
