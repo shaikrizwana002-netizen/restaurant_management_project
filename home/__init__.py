@@ -1,31 +1,54 @@
-# home/__init__.py
-# should be empty or contain package-level Python code only
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Privacy Policy</title>
-</head>
+<!__ templates/base.html __>
 <body>
-     <h1>Privacy Policy</h1>
-     <p>
-        We value your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and safeguard your data
-     </p>
-     <h2>Information Collection</h2>
-     <p>
-       We may collect personal information such as your name, email address, and usage data to improve our services.
-     </p>   
+     {% block breadcrumbs %}
+     <! __Breadcrumbs will be injected here __>
+     {% endblock %}
+
+     {% block content %}
+     <!__Page_specific content __>
+     {% endblock %}
 </body>
-</html>
+
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+   <ol>
+     <li><a href="{% url 'home" %} ">Home</a></li>
+   </ol>
+</nav>{% endblock content %}
+<h1>Welcome to Our Site</h1>
+{% endblock %}
 
 
-# views.py
-from django.shortcuts import render
+{% extends 'base.html' %}
 
-def privacy_policy(request):
-    return render(request, 'privacy_policy.html')
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+   <ol>
+     <li>a href="{% url 'home' %}">Home</a></li>
+     <li>Menu</li>
+   </ol>  
+</nav>
+{% endblock %}
 
-<!__ home.html __>
-<footer>
-      <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
-</footer>
+{% block content %}
+<h1>Our Menu</h1>
+{% endblock %}
+
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+  <ol>
+    <li><a href="{% url 'home' %} <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'menu' %}">Menu</a></li>
+    <li>Order Confirmation</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>Thank You for Your Order!</h1>
+{% endblock %}
+
