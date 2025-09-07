@@ -1,21 +1,30 @@
-< div class="datetime">
-   <p>Current Date: {{ current-date }}</p>
-   <p>Current Time: {{ current-tome/format-time }}</p>
-   </div>
+< !__ templates/privacy_policy.html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy</title>
+</head>
+<body>
+     <h1>Privacy Policy</h1>
+     <p>
+        We value your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and safeguard your data
+     </p>
+     <h2>Information Collection</h2>
+     <p>
+       We may collect personal information such as your name, email address, and usage data to improve our services.
+     </p>   
+</body>
+</html>
 
+
+# views.py
 from django.shortcuts import render
-from datetime import datetime
-def home-view(request):
-    now = datetime.now()
-    context = {'current-date': ..., 'current-time': ...}
-        return render(request, 'home.html', context)
 
-from django import template
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
 
-register = template.Library()
-
-@register.filter
-def format-time(value):
-    return value.strftime('%I:%M %p')  #,10:35 AM
-    {% load custom-filters %}
-
+<!__ home.html __>
+<footer>
+      <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+</footer>
