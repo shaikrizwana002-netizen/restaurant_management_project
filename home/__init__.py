@@ -1,30 +1,50 @@
- # views.py
- from django.shortcuts import render
- import random
+ # urls.py
+from django# urls.py
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
 
- def order-confirmation(request):
-    # Simulate an order number for demonstration
-    order_number = random.randint(100000, 999999)
-    return render(request, 'order_confirmation.html', {'order_number': order_number})
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+]
 
-<!__ templates/order_confirmation __>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Confirmation</title>
+    <title>Login</title>
 </head>
 <body>
-    <h1> Order Confirmed!</h1>
-    <p>Thank You for your purchase</h1>.
-    <p><strong>Order Number:</strong>
+    <h2>Login</h2>
+    {% if form.errors %}
+        <p style="color: red;">Invalid username or password.</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_username">Username:</label>
+        <input type="text" name="username" id="id_username" required><br>
+
+        <label for="id_password">Password:</label>
+        <input type="password" name="password" id="id_password" required><br>
+
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
 
- # urls.py
- from django.urls import path
- from . import views
- urlpatterns = [
-    path('order-confirmation/', views.order_confirmation, name='order_confirmation'),
 
- ]
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <label for="id_username">Username:</label>
+    <input type="text" name="username" id="id_username" required>
+
+    <label for="id_password">Password:</label>
+    <input type="password" name="password" id="id_password" required>
+
+    <button type="submit">Login</button>
+</form>
+
+# settings.py
+LOGIN_REDIRECT_URL = '/'
