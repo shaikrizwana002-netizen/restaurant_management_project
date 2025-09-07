@@ -1,4 +1,5 @@
-< !__ templates/privacy_policy.html>
+# home/__init__.py
+# should be empty or contain package-level Python code only
 <!DOCTYPE html>
 <html lang="en">
 <head>
