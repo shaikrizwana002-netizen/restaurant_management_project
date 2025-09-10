@@ -1,65 +1,59 @@
+from django.db import models
+
+class Feedback(models.Model):
+    name = models.CharField(max-length)
+    feedback = model.TextField()
+
+def __str__(self):
+    return f"Feedback from {self.name}"
+
+from django import forms
+from.models import Feedback
+
+class FeedbackForm(forms.ModelFrom)
+  class Meta:
+    model = Feedback 
+    fields = ['name', 'feedback']
+    widgets = {
+             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'feedback': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+}
+
+from django.shortcuts import render, redirect
+from .forms import FeedbackForm
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('feedback_thank_you')
+    else:
+        form = FeedbackForm()
+    return render(request, 'feedback-form.html', {'form': form})
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Restaurant Homepage</title>
+    <title>Submit Feedback</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div class="hero-section">
-        <h1>Welcome to Our Restaurant</h1>
-        <a href="{% url 'place_order' %}" class="order-button">Order Now</a>
+    <div class="container">
+        <h2>We'd love your feedback!</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
     </div>
-
-    <section class="gallery">
-        <img src="{% static 'images/food1.jpg' %}" alt="Delicious Dish">
-        <img src="{% static 'images/food2.jpg' %}" alt="Tasty Meal">
-        <img src="{% static 'images/food3.jpg' %}" alt="Fresh Ingredients">
-    </section>
 </body>
 </html>
 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-}
- .hero-section {
-    background-image: url('../images/food-background.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    text-align: center;
-    padding: 100px 20px;
- }
- .order-button {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: 328a745;
-    color: white;
-    font-size: 19px;
-    font-weight: bold;
-    border-radius: 8px;
-    text-decoration: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
- }
+from django.urls import path
+from . import views
 
-  .order-button:hover {
-    background-color: #218838;
-}
-
-.gallery img {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 40px 20px;
-    background-color: #f8f9fa;
-}
-
-.gallery img {
-    max-width: 100;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+urlpatterns = [
+    path('feedback/', views.submit_feedback, name='submit_feedback'),
+    path('thank-you/', views.thank_you, name='feedback_thank_you'),
+]
