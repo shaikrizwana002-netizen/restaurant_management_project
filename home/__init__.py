@@ -32,6 +32,10 @@ def submit_feedback(request):
         form = FeedbackForm()
     return render(request, 'feedback-form.html', {'form': form})
 
+def thank-you(request):
+    return render(request, 'thank-you.html')
+
+
 <!DOCTYPE html>
 <html>
 <head>
