@@ -8,7 +8,7 @@ def about_us_display(request):
 
 <div class="about_us_section">
    {% if about_us.image %}
-     <img sr"{{ anbout_us.image.url }}" alt="Fusion Restaurant" style="max-width: 100%; border_radius: 8px;">
+     <img src"{{ anbout_us.image.url }}" alt="Fusion Restaurant" style="max-width: 100%; border_radius: 8px;">
      {% endif %}
      <p>{{ about_us.description }}</p>
 </div>     
