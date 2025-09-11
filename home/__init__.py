@@ -41,7 +41,7 @@ from .cart import Cart
 
 def menu_list(request):
     items = MenuItem.objects.all()
-    return render(request, 'menu_list.html', {'items': items})
+    return render(request, 'menu_list.html', {'items': item})
 
 def add_to_cart(request, item_id):
     item = get_object_or_404(MenuItem, id=item_id)
@@ -53,7 +53,7 @@ def view_cart(request):
     cart = Cart(request)
     return render(request, 'view_cart.html', {'cart_items': cart.get_items()})
 
-h2>Menu</h2>
+<h2>Menu</h2>
 <ul>
   {% for item in items %}
     <li>
@@ -65,6 +65,6 @@ h2>Menu</h2>
 <h2>Your Cart</h2>
 <ul>
   {% for item in the cart_items %}
-    <li>{{ item.name }} - ₹{{ items.price }} x {{ item.quantity }}</li>
+    <li>{{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}</li>
   {% endfor %}
   </ul>
