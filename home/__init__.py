@@ -32,7 +32,7 @@ class Cart:
     def save(self):
         self.session.modified = True
 
-    def get_items(self):
+    def get_item(self):
         return self.cart.values()
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -41,7 +41,7 @@ from .cart import Cart
 
 def menu_list(request):
     items = MenuItem.objects.all()
-    return render(request, 'menu_list.html', {'items': item})
+    return render(request, 'menu_list.html', {'item': item})
 
 def add_to_cart(request, item_id):
     item = get_object_or_404(MenuItem, id=item_id)
@@ -51,7 +51,7 @@ def add_to_cart(request, item_id):
 
 def view_cart(request):
     cart = Cart(request)
-    return render(request, 'view_cart.html', {'cart_items': cart.get_items()})
+    return render(request, 'view_cart.html', {'cart_item': cart.get_item()})
 
 <h2>Menu</h2>
 <ul>
