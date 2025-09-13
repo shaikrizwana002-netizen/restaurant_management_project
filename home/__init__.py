@@ -1,39 +1,35 @@
-from django import forms
-
-class ContactForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()  This ensures only valid email addresses are accepted
-    message = forms.CharField(widget=forms.Textarea)
-
 from django.shortcuts import render
-forms .forms import ContactForm
+from .forms import ContactForm
 
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            message = form.cleaned_data['message']
-            # You can now use the validated email
-        else:
-            # Form is invalid, errors will be shown in the template
-            pass
+          return redirect('thank_you')  # Redirect to the thank-you page
     else:
         form = ContactForm()
     
     return render(request, 'contact.html', {'form': form})
 
-<form method="post">
-   {% csrf_token %}
-   {{ form.as_p }}
-   <button type="submit">Send</button>
-</form>
+from django.urls import path
+from . import views
 
-{  % if form.errors %}
-  <ul>
-    { % for field in form %}
-       { %for error in field.errors %}
-       <li>{{ fields.label }}: {{ error }}</li>
-  </ul>    
-{ %endif %}
+urlpatterns = [
+    path('contact/', views.contact_view, name='contact'),
+    path('thank-you/', views.thank_you_view, name='thank_you'),
+]
+
+
+<!-- thank_you.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You</title>
+</head>
+<body>
+    <h1>Thank You!</h1>
+    <p>Your message has been sent successfully. We'll get back to you soon.</p>
+    <a href="{% url 'contact' %}">Send another message</a>
+</body>
+</html>
