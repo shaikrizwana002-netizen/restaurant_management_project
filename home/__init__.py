@@ -5,7 +5,7 @@ class ContactForm(forms.Form):
     email = forms.EmailField()  This ensures only valid email addresses are accepted
     message = forms.CharField(widget=forms.Textarea)
 
-from djang.shortcuts import render
+from django.shortcuts import render
 forms .forms import ContactForm
 
 def contact_view(request):
