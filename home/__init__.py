@@ -1,35 +1,36 @@
+from django.db import models
+
+class RestaurantInfo(models.Model):
+  name = models.CharField(max_length=100)
+  address = models.TextField()
+
+def __str__(self):
+    return self.name
+
 from django.shortcuts import render
 from .forms import ContactForm
+from .models import RestaurantInfo
 
 def contact_view(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-          return redirect('thank_you')  # Redirect to the thank-you page
-    else:
         form = ContactForm()
-    
-    return render(request, 'contact.html', {'form': form})
+        restaurant = RestaurantInfo.objects.first()  
+        
+    if request.method =='POST':
+        form = ContactForm(request.POST)
+         if form.is_valid():
+            # Process form data
+            return redirect('thank_you')
 
-from django.urls import path
-from . import views
+    return render(request, 'contact.html', {
+        'form': form,
+        'restaurant': restaurant
+    })
 
-urlpatterns = [
-    path('contact/', views.contact_view, name='contact'),
-    path('thank-you/', views.thank_you_view, name='thank_you'),
-]
+<h2>Contact Us</h2>
+<p><strong>Address:</strong> {{ restaurant.address }}</p>
 
-
-<!-- thank_you.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Thank You</title>
-</head>
-<body>
-    <h1>Thank You!</h1>
-    <p>Your message has been sent successfully. We'll get back to you soon.</p>
-    <a href="{% url 'contact' %}">Send another message</a>
-</body>
-</html>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+</form>
