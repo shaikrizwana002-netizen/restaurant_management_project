@@ -4,7 +4,7 @@ from .models import MenuCategory
 
 class MenuCategorySerializer(serializers)
 class Meta:
-    model - MenuCategory
+    model = MenuCategory
     fields = ['name']
 
 # home/views.py
