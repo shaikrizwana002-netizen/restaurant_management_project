@@ -1,36 +1,25 @@
-from django.db import models
+# home/serializers.py
+from rest_framework import serializers
+from .models import MenuCategory
 
-class RestaurantInfo(models.Model):
-  name = models.CharField(max_length=100)
-  address = models.TextField()
+class MenuCategorySerializer(serializers)
+class Meta:
+    model - MenuCategory
+    fields = ['name']
 
-def __str__(self):
-    return self.name
+# home/views.py
+from rest_framework.generics import ListAPIView
+from .models import MenuCategory    
+from .serializers import MenuCategorySerializer
 
-from django.shortcuts import render
-from .forms import ContactForm
-from .models import RestaurantInfo
+class MenuCategoryListView(ListAPIView):
+queryset = MenuCategory.objects.all()
+serializer_class = MenuCategorySerializer
 
-def contact_view(request):
-        form = ContactForm()
-        restaurant = RestaurantInfo.objects.first()  
-        
-    if request.method =='POST':
-        form = ContactForm(request.POST)
-         if form.is_valid():
-            # Process form data
-            return redirect('thank_you')
+# home/urls.py
+from django.urls import path
+from .views import MenuCategoryListView
 
-    return render(request, 'contact.html', {
-        'form': form,
-        'restaurant': restaurant
-    })
-
-<h2>Contact Us</h2>
-<p><strong>Address:</strong> {{ restaurant.address }}</p>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send</button>
-</form>
+urlpatterns = [
+    path('menu_categories/', MenuCategoryListView.as_view(), name='menu_category_List'),
+]
