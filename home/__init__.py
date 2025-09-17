@@ -1,25 +1,17 @@
-# home/serializers.py
-from rest_framework import serializers
-from .models import MenuCategory
+touch orders/utils.py
 
-class MenuCategorySerializer(serializers):
-class Meta:
-    model = MenuCategory
-    fields = ['name']
+# orders/utils.py
+import string
+import secrets
+from orders.models import Coupon # Adjust this import based on your actual mode name
 
-# home/views.py
-from rest_framework.generics import ListAPIView
-from .models import MenuCategory    
-from .serializers import MenuCategorySerializer
+def generate_coupon_code(length=10):
+    characters = string.ascii_uppercase + string.digits
+    while True
+     code = ''.join(secrets.choice(characters) for _ in  range(length))
+     if not Coupon.objects.filter(code=code).exists():
+     return code
 
-class MenuCategoryListView(ListAPIView):
-queryset = MenuCategory.objects.all()
-serializer_class = MenuCategorySerializer
-
-# home/urls.py
-from django.urls import path
-from .views import MenuCategoryListView
-
-urlpatterns = [
-    path('menu_categories/', MenuCategoryListView.as_view(), name='menu_category_List'),
-]
+from orders.utils import generate_coupon_code
+new_code = generate_coupon_code()
+coupon = Coupon.objects.create(code=new_code, discount=20)
