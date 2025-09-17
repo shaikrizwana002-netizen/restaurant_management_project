@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from .models import MenuCategory
 
-class MenuCategorySerializer(serializers)
+class MenuCategorySerializer(serializers):
 class Meta:
     model = MenuCategory
     fields = ['name']
