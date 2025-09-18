@@ -1,17 +1,15 @@
-touch orders/utils.py
+from django.db import models
 
-# orders/utils.py
-import string
-import secrets
-from orders.models import Coupon # Adjust this import based on your actual mode name
+class OrderStatus(models.Model):
+    name = models.CharField(max_length=50, unique=True)
 
-def generate_coupon_code(length=10):
-    characters = string.ascii_uppercase + string.digits
-    while True:
-     code = ''.join(secrets.choice(characters) for _ in  range(length))
-     if not Coupon.objects.filter(code=code).exists():
-        return code  # ← This must be inside the 'if' block
+    def __str__(self):
+        return self.name
 
-from orders.utils import generate_coupon_code
-new_code = generate_coupon_code()
-coupon = Coupon.objects.create(code=new_code, discount=20)
+PENDING = 'Pending'
+PROCESSING = 'Processing'
+COMPLETED = 'Completed'
+CANCELLED = 'Cancelled'
+
+ORDER_STATUSES = [PENDING,PROCESSING,COMPLETED,CANCELLED]
+
