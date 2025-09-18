@@ -7,11 +7,8 @@ class OrderStatus(models.Model):
         return self.name
 
 class Order(models.Model):
-    #Add your existing fields here, for example:
     customer_name = models,CharField(max_length=100)
     order_data = models.DataTimeField(auto_now)
-
-    #New field to track status
     status = models.ForeignKey(OrderStatus, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
