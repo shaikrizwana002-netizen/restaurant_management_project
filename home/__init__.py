@@ -32,8 +32,9 @@ class FilteredMenuItemsView(APIView):
         category_name = request.query_params.get('category')
         if category_name:
             items = MenuItem.objects.filter(category__category_name__iexact=category_name)
-            else:
-                items = MenuItem.objects.all()
+            serializer = MenuItemSerializer(items, many=True)
+        else:
+            items = MenuItem.objects.all()
             serializer = MenuItemSerializer(items, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)    
 
