@@ -1,39 +1,43 @@
-from django.db import models
-from django.contrib.auth.models import User
+class Category(models.Model):
+    Category_name = models.CharField(max_length=100)
 
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='orders')
-    date = models.DateTimeField(auto_now_add=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    def __str__(self):
+        return self.category_name
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product_name = models.CharField(max_length=255)
-    quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits10, decimal_places=2)
+class MenuField(modles.Model):
+    name = models.ChatrField(max_length=100)
+    description = models.TextFDield()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    category_name = models.ForeignKey(Category, =models.CASCADE)
 
-from rest_framework import serializers
-from .models import Order, OrderItem
+    def __str__(self):
+        return self.name        
 
-class OrderItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderItem
-        fields = ['product_name', 'quantity', 'price']
+from rest_framwork import serializers
+from .models import MenuItem
 
-class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
+class MenuItemSerializer(serializer.ModelSerializer):
+class Meta:
+    model = MenuItem
+    fields = '__all__'
 
-    class Meta:
-        model = Order
-        fields = ['id', 'date', 'total_price', 'items']
+from rest_framwork.views import APIView
+from.rest_framwork.response import Response
+from rest_framwork import status
+from .models import MenuItem
+from .serializers import MenuItemSerializer
 
-from rest_framework import generics, permissions
-from .models import Order
-from .serializers import OrderSerializer
+class FilteredMenuItemsView(APIView):
+    def get(self, request):
+        category_name = request.query_params.get('category')
+        if category_name:
+            items = MenuItem.objects.filter(category__category_name__iexact=category_name)
+            else:
+                items = MenuItem.objects.all()
+            serializer = MenuItemSerializer(items, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)    
 
-class OrderHistoryView(generics.ListAPIView):
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+from django.urls import path
+from .views import FilteredMenuItemsView
 
-    def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by('-date')
+urlpatterns = [path('menu_items/', FilteredMenuItemsView.as_view(), name='filtered_menu_items'),]
