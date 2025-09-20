@@ -18,7 +18,7 @@ def is_valid_email(email: str) -> bool:
 
 from utils.validation_utils import is_valid_email
 
-ef submit_email(request):
+def submit_email(request):
     email = request.POST.get('email')
     if is_valid_email(email):
         # Proceed with saving or processing
