@@ -21,7 +21,7 @@ class MenuItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_price(self, value):
-        if value <= 0:
+        if value <= 0.0:
             raise serializers.ValidationError("Price must be a positive number.")
         return value
         
