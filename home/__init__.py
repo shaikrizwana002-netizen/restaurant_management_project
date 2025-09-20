@@ -15,7 +15,7 @@ class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name']  # Enables partial, case-insensitive search
+    search_fields = ['name'] 
 
 # settings.py
 REST_FRAMEWORK = {
