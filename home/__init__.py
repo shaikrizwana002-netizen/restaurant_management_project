@@ -9,7 +9,7 @@ class Order(models.Model):
         ('pending', 'Pending'),       
         ('processing', 'Processing'),
     ]
-    status + models.CharField(max_length=20, chocied=STATUS_CHOICES)
+    status = models.CharField(max_length=20, chocied=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     objects = ActiveOrderManager()
 
