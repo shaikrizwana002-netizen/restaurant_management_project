@@ -1,21 +1,35 @@
-from django.db import models
+from django.contrib.auth.models import User
+from rest_framework import serializers
 
-class Restaurant(models.Model):
-    name = models.CharField(max_length=255)
-    address = models.TextField()
-    # Add this new field for opening days
-    operating_days = models.CharField(
-    max_length=50,
-    help_text="Comma_Separated list of operating days, e.g., 'Mon, Tue, Wed, Thu, Fri'"
-    )
-    def __str__(self):
-        return self.name
+class UserProfileSerializer(serializer.ModelSerializer):
+     class Meta:
+        model = UserProfileSerializer
+        fields = ['first_name','last_name', 'email'] # Add other editable fields if needed
 
-from restaurant.models import Restaurant
-# Create a new restaurant instance
-r = Restaurant(name="Spice Villa", address="123 Curry Lane", operating_days="Mon, Tue, Wed, Thu, Fri")        
-r.save()
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from.serializer import UserProfileSerializer
 
-# Retrieve and check
-restaurant = Restaurant.objects.get(name="Spice Villa")
-print(restaurant.operating_days) # Mon, Tue,Wed, Thu, Fri
+class UserProfileViewSet(viewsets.Viewsets):
+   permission_classes = [permission.IsAuthenticated]
+
+   def update(self, requet):
+       serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
+       if serializer.is_valid():
+          serializer.save()
+          return Response(serializer)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from django.urls import path
+from.views import UserProfileViewSet
+
+user_profile_view = UserProfileViewSet.as_view({'put': 'update'})
+
+urlspatterns = [
+    path('profile/update/', user_profile_view, name='profile-update')
+]
+
+{ "first_name": "Shaik",
+"last_name": "Rizwana",
+"email": "rizwana@example.com",
+}
