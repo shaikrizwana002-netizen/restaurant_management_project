@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from .serializer import UserProfileSerializer
 
 class UserProfileViewSet(viewsets.Viewsets):
-   permission_classes = [permission.IsAuthenticated]
+   permission_classes = [permissions.IsAuthenticated]
 
    def update(self, requet):
        serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
