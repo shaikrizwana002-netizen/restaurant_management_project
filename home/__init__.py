@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-class UserProfileSerializer(serializer.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
      class Meta:
-        model = UserProfileSerializer
-        fields = ['first_name','last_name', 'email'] # Add other editable fields if needed
+        model = User  # or your custom user model
+        fields = ['first_name','last_name', 'email'] 
 
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from.serializer import UserProfileSerializer
+from .serializer import UserProfileSerializer
 
 class UserProfileViewSet(viewsets.Viewsets):
    permission_classes = [permission.IsAuthenticated]
