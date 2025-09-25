@@ -1,18 +1,21 @@
 from django.db import models
 
-class ActiveOrderManager(models.Manager):
-    def get_active_orders(self):
-        return self.filter(status__in=['pending', 'processing'])
+class Restaurant(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    # Add this new field for opening days
+    operating_days = models.CharField(
+    max_length=50,
+    help_text="Comma_Separated list of operating days, e.g., 'Mon, Tue, Wed, Thu, Fri'"
+    )
+    def __str__(self):
+        return self.name
 
-class Order(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),       
-        ('processing', 'Processing'),
-    ]
-    status = models.CharField(max_length=20, chocied=STATUS_CHOICES)
-    created_at = models.DateTimeField(auto_now_add=True)
-    objects = ActiveOrderManager()
+from restaurant.models import Restaurant
+# Create a new restaurant instance
+r = Restaurant(name="Spice Villa", address="123 Curry Lane", operating_days="Mon, Tue, Wed, Thu, Fri")        
+r.save()
 
-from orders.models import Order
-active_orders = Order.objects.get_active_orders = Orders.objects.get_active_orders()
-print(active_orders)    
+# Retrieve and check
+restaurant = Restaurant.objects.get(name="Spice Villa)
+print(restaurant.operating_days) # Mon, Tue,Wed, Thu, Fri
