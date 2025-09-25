@@ -17,5 +17,5 @@ r = Restaurant(name="Spice Villa", address="123 Curry Lane", operating_days="Mon
 r.save()
 
 # Retrieve and check
-restaurant = Restaurant.objects.get(name="Spice Villa)
+restaurant = Restaurant.objects.get(name="Spice Villa")
 print(restaurant.operating_days) # Mon, Tue,Wed, Thu, Fri
