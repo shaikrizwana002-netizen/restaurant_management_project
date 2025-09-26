@@ -1,51 +1,56 @@
-from django.core.mail import send_mail, BadHeaderError
-from django .conf import settings
-import logging
+from django.db import models
+from account.models import Customer # assuming this is your user model
+from home.models import Product # assuming this is your product model
 
-#Set up logging
-logger = logging.getLogger(__name__)
+class Order(models.Model):
+    order_id = models.CharField(max_length=100, unique=True)
+    customer = models.ForignKey(Customer, on_delete=models.CASCADE, related)
+    order_items = models.ManyToManyField(Product, related_name='orders')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-def send_order_confirmation_email(order_id, customer_email, customer_name, order_items, total_amount):
-  """
-  Sends an order confirmation email to the customer.
+    def __str__(self):
+        return f"Order #{self.order_id} by {self.customer}"
 
-  Args:
-      order_id (str): Unique identifier for the order.
-      customer_email (str): Recipient's email address.
-      customer_name (str): Name of the customer.
-      order_items (list): List of items in the order.
-      total_amount (float): Total cost of the order.
+from rest_framework import serializers
+from .models import Order
+from home.models import Product
 
-   Returns:
-      dict: Result status and and message.
-   """
-   subject = f"Order Confirmation _ #{order_id}"
-   item_list = "\n".join([f"-{items}" for item in order_items])
-   message = (
-    f"Dear {customer_name},\n\n"
-    f"Thankn you for your order!\n\n"
-    f"Order ID: {order_id}\n"
-    f"Items:\n{item_list}\n\n"
-    f"Total Amount: ₹{total_amount:.2f}\n\n"
-    f"Best regards,\nYour Company Name"
-   )
-   from_email = settings.DEAFAULT_FROM_EMAIL
+class ProductSerializer(serializers.ModelSerializer):
+    class m eta:
+        model = Product
+        fields = ['id', 'name', 'price' # adjust fields as needed
+         
+class OrderSerializer(serializers.ModelSerializer):
+    customer_name = serializers.CharField(source='customer.name', read_only=True)
+    order_items = ProductSerializer(many=True)
 
-   try:
-      send_mail(subject, message,from_email, [customer_email])
-      return {"status": "success", "message": "Confirmation email sent success."}
-      except BadHeaderError:
-        logger.error(f"Bad header error while sending email to {customer_email})
-        return {"status": "error", "message": "Invalid header found."}
-      except Exception as e:
-        logger.error(f"Error sending email to {customer_email}: {e}")
-        return {"status": "error", "message": "Failed to send confirmation email."}  
+    class meta:
+    model = Order
+    fields = ['order)id', 'customer_name', 'order_items', 'total_price', 'created_at']
+    
+    
+from rest_framework.generics import RetrieveAPIView
+from .models import Order
+from .serializers import OrderSerializer
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_400
+
+class OrderDetailView(RetrieveAPIView):
+    serializer_class OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        order_id = self.kwargs.get('order_id')
+        return get_object_or_400(Order, order_id=order_id)            
 
 
-EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yourprovider.com'
-EMAIL_PORT  = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your_email@example.com'
-EMAIL_HOST_PASSWORD = 'your_password'
-DEFAULT_FROM_EMAIL = 'Your Company <your_email@example.com>'       
+from django.urls import path
+from .views import OrderDetailView
+
+urlpatterns = [
+    path('<str:order_id>/', OrderDetailView.as_view(), name='order-detail'),
+]
+
+
+curl -H "Authorization: Token your_token_here" http://localhost:8000/orders/ORD12345/
