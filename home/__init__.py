@@ -4,7 +4,7 @@ from home.models import Product # assuming this is your product model
 
 class Order(models.Model):
     order_id = models.CharField(max_length=100, unique=True)
-    customer = models.ForignKey(Customer, on_delete=models.CASCADE, related)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related)
     order_items = models.ManyToManyField(Product, related_name='orders')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -17,7 +17,7 @@ from .models import Order
 from home.models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
-    class m eta:
+    class Meta:
         model = Product
         fields = ['id', 'name', 'price' # adjust fields as needed
          
