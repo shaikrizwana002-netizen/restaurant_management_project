@@ -1,71 +1,44 @@
 from django.db import models
-from django.contrib.auth.models import user
+from home.models import MenuItem
+from decimal import Decimal
 
-class order(models.Model):
-    status-CHOICES=[
-        ('PENDING','PENDING'),
-        ('Processing','processing'),
-        ('cancelled','cancelled'),
-        ('completed','completed'),
-    ]
-
-    user=models.foreignkey(User, on-delete=models.CASCADE)
-    order-id = models.CharField(max_length=10, unique=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
-    # other fields...
+class Order(models.Model):
+    order_id = models.CharField(max_length=10, unique=True)
+    status = models.CharField(max_length=20, default='Pending')
 
     def __str__(self):
-        return f"Order {self.order_id} - {self.status}"
+        return f"Order {self.order_id}"
 
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from .models import Order
-from .serializers import OrderSerializer
-from django.shortcuts import get_object_or_404
+    def calculate_total(self):
+        total = Decimal('0.00')
+        for item in self.items.all():
+            total += item.price * item.quantity
+        return total
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
 
-    @action(detail=True, methods=['delete'], url_path='cancel')
-    def cancel_order(self, request, pk=None):
-        order = get_object_or_404(Order, pk=pk)
+    def __str__(self):
+        return f"{self.quantity} x {self.menu_item.name}"
 
-        # Ensure the user owns the order
-        if order.user != request.user:
-            return Response(
-                {"error": "You are not authorized to cancel this order."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        
+from django.test import TestCase
+from home.models import MenuItem
+from orders.models import Order, OrderItem
+from decimal import Decimal
 
-        # Update status
-        order.status = 'Cancelled'
-        order.save()
+class OrderTotalTestCase(TestCase):
+    def setUp(self):
+        self.item1 = MenuItem.objects.create(name="Burger", price=Decimal('5.00'))
+        self.item2 = MenuItem.objects.create(name="Fries", price=Decimal('2.50'))
+        self.order = Order.objects.create(order_id="ORD123")
 
-        return Response(
-            {"message": f"Order {order.order_id} has been cancelled."},
-            status=status.HTTP_200_OK
-        )
+        OrderItem.objects.create(order=self.order, menu_item=self.item1, quantity=2, price=self.item1.price)
+        OrderItem.objects.create(order=self.order, menu_item=self.item2, quantity=3, price=self.item2.price)
 
-from rest_framework import serializers
-from .models import Order
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['id', 'order_id', 'status', 'user']
-
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import OrderViewSet
-
-router = DefaultRouter()
-router.register(r'orders', OrderViewSet)
-
-urlpatterns = [
-    path('', include(router.urls)),
-]
-
-
-Authorization: Token <your_token>
+    def test_calculate_total(self):
+        expected_total = Decimal('5.00') * 2 + Decimal('2.50') * 3
+        self.assertEqual(self.order.calculate_total(), expected_total)
