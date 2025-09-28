@@ -1,54 +1,71 @@
-from django.core.mail import send_mail, BadHeaderError
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
-from django.conf import settings
-import logging
+from django.db import models
+from django.contrib.auth.models import user
 
-logger = logging.getLogger(__name__)
+class order(models.Model):
+    status-CHOICE=[
+        ('PENDING','PENDING'),
+        ('Processing','processing'),
+        ('cancelled','cancelled'),
+        ('completed','completed'),
+    ]
 
-def send_custom_email(recipient_email, subject, message_body):
-    """
-    Sends an email using Django's email backend.
+    user=models.foreignkey(user, on-delete=models.CASCADE)
+    order-id = models.CharField(max_length=10, unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    # other fields...
 
-    Args:
-        recipient_email (str): Recipient's email address.
-        subject (str): Subject of the email.
-        message_body (str): Body of the email.
+    def __str__(self):
+        return f"Order {self.order_id} - {self.status}"
 
-    Returns:
-        bool: True if email sent successfully, False otherwise.
-    """
-    try:
-        validate_email(recipient_email)
-        send_mail(
-            subject,
-            message_body,
-            settings.DEFAULT_FROM_EMAIL,
-            [recipient_email],
-            fail_silently=False,
-        )
-        return True
-        except ValidationError:
-        logger.error(f"Invalid email address: {recipient_email}")
-    except BadHeaderError:
-        logger.error("Bad header found in email.")
-    except Exception as e:
-        logger.error(f"Failed to send email: {str(e)}")
-    
-    return False
-from rest_framework.views import APIView
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
-from .utils import send_custom_email
+from .models import Order
+from .serializers import OrderSerializer
+from django.shortcuts import get_object_or_404
 
-class ContactEmailView(APIView):
-    def post(self, request):
-        email = request.data.get("email")
-        subject = request.data.get("subject")
-        message = request.data.get("message")
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
 
-        if send_custom_email(email, subject, message):
-            return Response({"message": "Email sent successfully."}, status=status.HTTP_200_OK)
-        return Response({"error": "Failed to send email."}, status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=True, methods=['delete'], url_path='cancel')
+    def cancel_order(self, request, pk=None):
+        order = get_object_or_404(Order, pk=pk)
 
-        
+        # Ensure the user owns the order
+        if order.user != request.user:
+            return Response(
+                {"error": "You are not authorized to cancel this order."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Update status
+        order.status = 'Cancelled'
+        order.save()
+
+        return Response(
+            {"message": f"Order {order.order_id} has been cancelled."},
+            status=status.HTTP_200_OK
+        )
+
+from rest_framework import serializers
+from .models import Order
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'order_id', 'status', 'user']
+
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import OrderViewSet
+
+router = DefaultRouter()
+router.register(r'orders', OrderViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
+
+
+Authorization: Token <your_token>
