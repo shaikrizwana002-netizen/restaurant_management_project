@@ -1,54 +1,54 @@
-from django.db import models
+from django.core.mail import send_mail, BadHeaderError
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.conf import settings
+import logging
 
-class ContactFormSubmission(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    message = models.TextField()
+logger = logging.getLogger(__name__)
 
-    def __str__(self):
-        return f"{self.name} - {self.email}"
+def send_custom_email(recipient_email, subject, message_body):
+    """
+    Sends an email using Django's email backend.
 
+    Args:
+        recipient_email (str): Recipient's email address.
+        subject (str): Subject of the email.
+        message_body (str): Body of the email.
 
-from rest_framework import serializers
-from .models import ContactFormSubmission
-
-class ContactFormSubmissionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ContactFormSubmission
-        fields = ['id', 'name', 'email', 'message']
-
-
-from rest_framework.generics import CreateAPIView
-from rest_framework.response import Response 
+    Returns:
+        bool: True if email sent successfully, False otherwise.
+    """
+    try:
+        validate_email(recipient_email)
+        send_mail(
+            subject,
+            message_body,
+            settings.DEFAULT_FROM_EMAIL,
+            [recipient_email],
+            fail_silently=False,
+        )
+        return True
+        except ValidationError:
+        logger.error(f"Invalid email address: {recipient_email}")
+    except BadHeaderError:
+        logger.error("Bad header found in email.")
+    except Exception as e:
+        logger.error(f"Failed to send email: {str(e)}")
+    
+    return False
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import status
-from .models import ContactFormSubmission
-from .serializers import ContactFormSubmissionSerializer
+from .utils import send_custom_email
 
-class ContactFormSubmissionView(CreateAPIView):
-    queryset = ContactFormSubmission.objects.all()
-    serializer_class = ContactFormSubmissionSerializer
+class ContactEmailView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+        subject = request.data.get("subject")
+        message = request.data.get("message")
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Contact form submitted successfully."},
-                status= status.HTTP_201_CREATED
-            )
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if send_custom_email(email, subject, message):
+            return Response({"message": "Email sent successfully."}, status=status.HTTP_200_OK)
+        return Response({"error": "Failed to send email."}, status=status.HTTP_400_BAD_REQUEST)
 
-from django.urls import path
-from .view import ContactFormSubmissionView
-
-urlpatterns = [
-    path('api/contact/', ContactFormSubmissionView.as_view(), name='contact_form_submit'),
-]
-
-from django.urls import path, include
-
-urlspatterns = [
-    path('', include('home.urls')),
-    # other routes...
-]
-
+        
