@@ -2,14 +2,14 @@ from django.db import models
 from django.contrib.auth.models import user
 
 class order(models.Model):
-    status-CHOICE=[
+    status-CHOICES=[
         ('PENDING','PENDING'),
         ('Processing','processing'),
         ('cancelled','cancelled'),
         ('completed','completed'),
     ]
 
-    user=models.foreignkey(user, on-delete=models.CASCADE)
+    user=models.foreignkey(User, on-delete=models.CASCADE)
     order-id = models.CharField(max_length=10, unique=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     # other fields...
