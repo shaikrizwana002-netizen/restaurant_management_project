@@ -1,7 +1,3 @@
-from rest_framework import serializers
-from .models import Table
+from django.shortcuts import render
 
-class TableSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Table
-        fields = ['table_number', 'capacity', 'is_available']
+# Create your views here.
