@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
+from .models import Table
+from .serializers import TableSerializer
 
-# Create your views here.
+class AvailabelTablesAPIView(ListAPI):
+    serializer_class = TableSerializer
+
+    def get_queryset(self):
+    return Table.objects.filter(is_available=True)
