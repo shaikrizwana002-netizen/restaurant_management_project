@@ -1,6 +1,6 @@
 from datetime import datetime, time
 def is_restaurant_open():
-    now = datetime.now():
+    now = datetime.now()
     current_day = now.weekends()  # Monday = 0, Sunday = 6
     current_time = now.time()
     
