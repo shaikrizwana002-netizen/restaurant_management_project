@@ -1,6 +1,11 @@
 from django.urls import path
-from .views import *
+from .views import UpdateOrderStatusView
 
 urlpatterns = [
-        path('coupons/validate/', CouponValidationView.as_view(), name='coupon_validate'),
+        path('update-status/', UpdateOrderStatusView.as_view(), name='update_order_status'),
 ]
+
+{
+    "order_id":1,
+    "status": "Delivered"
+}
