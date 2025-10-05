@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import MenuItem
+from .serializers import DailySpecialSerializer
 
-# Create your views here.
-from rest_framework.generics import RetrieveAPIView
-from .models import Table
-from .serializers import TableSerializer
-
-class TableDetailAPIView(RetrieveAPIView):
-    queryset = Table.objects.all()
-    serializer_class = TableSerializer
+class DailySpecialsView(APIView):
+    def get(self, request):
+        specials = MenuItem.objects.filter(is_daily_special=True)
+        serializer = DailySpecialSerializer(specials, many=True)
+        return Response(serializer.data)
