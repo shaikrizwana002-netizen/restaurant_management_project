@@ -1,25 +1,16 @@
 from django.db import models
-
-class OrderManager(models.Manager):
-    def with_status(self, status):
-        return self.filter(status=status)
+from .utils import calculate_discount  # Adjust import path as needed
 
 class Order(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('processing', 'Processing'),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
-    ]
-
     customer_name = models.CharField(max_length=255)
-    product_name = models.CharField(max_length=255)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # Attach the custom manager
-    objects = OrderManager()
+    def calculate_total(self):
+        total = 0
+        for item in self.items.all():  # Assuming related_name='items' in OrderItem
+            discounted_price = calculate_discount(item.product.price, item.quantity)
+            total += discounted_price
+        return total
 
     def __str__(self):
-        return f"{self.customer_name} - {self.product_name} ({self.status})"
+        return f"Order #{self.id} - {self.customer_name}"
