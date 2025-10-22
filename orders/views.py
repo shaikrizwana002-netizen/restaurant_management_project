@@ -20,3 +20,4 @@ class UpdateOrderStatusView(APIView):
             return Response({"message": f"Order #{order.id} status updated to '{order.status}'."}, status=http_status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=http_status.HTTP_400_BAD_REQUEST)
+            
