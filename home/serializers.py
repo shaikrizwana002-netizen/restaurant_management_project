@@ -3,5 +3,11 @@ from .models import MenuCategory
 
 class MenuCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuCategory
-        fields = ['id', 'name']
+        model = MenuCategorySerializer
+         fields = ['id', 'user', 'menu_item', 'rating', 'comment', 'created_at']
+
+    def validate_rating(self, value):
+        if not (1 <= value <= 5):
+            raise serializers.ValidationError("Rating must be between 1 and 5.")
+        return value
+    
