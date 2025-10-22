@@ -6,8 +6,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class MenuCategory(models.Model):
     name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=200)
