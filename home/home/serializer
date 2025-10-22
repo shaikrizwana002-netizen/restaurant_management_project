@@ -1,9 +1,16 @@
 from rest_framework.generics import ListAPIView
 from .models import Table
 from .serializers import TableSerializer
+from rest_framework import serializers
+from .models import MenuItem
 
 class AvailabelTablesAPIView(ListAPI):
     serializer_class = TableSerializer
 
     def get_queryset(self):
     return Table.objects.filter(is_available=True)
+
+    class MenuItemSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = MenuItem
+            fields = ['id', 'name', 'description', 'price', 'is_featured']
