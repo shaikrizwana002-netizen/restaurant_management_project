@@ -8,3 +8,4 @@ class DailySpecialsView(APIView):
         specials = MenuItem.objects.filter(is_daily_special=True)
         serializer = DailySpecialSerializer(specials, many=True)
         return Response(serializer.data)
+
