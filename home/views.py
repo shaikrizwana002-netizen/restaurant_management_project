@@ -17,3 +17,4 @@ class MenuItemIngredientsView(RetrieveAPIView):
         ingredients = menu_item.ingredients.all()
         serializer = IngredientSerializer(ingredients, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
