@@ -25,3 +25,12 @@ class OrderItem(models.Model):
             special = DailySpecial.objects.filter(available=True).order_by('?').first()
             return special  # Returns None if no specials are available
     
+class Restaurant(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=20)
+    opening_hours = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
