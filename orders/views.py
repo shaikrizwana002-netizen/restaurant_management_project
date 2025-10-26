@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status as http_status
 from .models import Order
 from .serializers import OrderStatusUpdateSerializer
+from .models import Restaurant
+from .serializers import RestaurantSerializer
 
 class UpdateOrderStatusView(APIView):
     def post(self, request):
@@ -20,3 +22,9 @@ class UpdateOrderStatusView(APIView):
             return Response({"message": f"Order #{order.id} status updated to '{order.status}'."}, status=http_status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=http_status.HTTP_400_BAD_REQUEST)
+
+class RestaurantInfoView(APIView):
+    def get(self, request):
+        restaurants = Restaurant.objects.all()
+        serializer = RestaurantSerializer(restaurants, many=True)
+        return Response(serializer.data)
