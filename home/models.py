@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
@@ -34,3 +36,11 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+class Reservation(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    customer_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.customer_name} ({self.start_time} - {self.end_time})"
