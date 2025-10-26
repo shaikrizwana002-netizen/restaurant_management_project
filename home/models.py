@@ -44,3 +44,10 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"{self.customer_name} ({self.start_time} - {self.end_time})"
+
+class MenuCategory(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name

@@ -5,6 +5,7 @@ from .models import Order
 from .serializers import OrderStatusUpdateSerializer
 from .models import Restaurant
 from .serializers import RestaurantSerializer
+from .serializer import MenuCategorySerializer
 
 class UpdateOrderStatusView(APIView):
     def post(self, request):
@@ -28,3 +29,8 @@ class RestaurantInfoView(APIView):
         restaurants = Restaurant.objects.all()
         serializer = RestaurantSerializer(restaurants, many=True)
         return Response(serializer.data)
+
+class MenuCategoryViewSet(viewsets.ModelViewSet):
+    queryset = MenuCategory.objects.all()
+    serializer_class = MenuCategorySerializer
+
