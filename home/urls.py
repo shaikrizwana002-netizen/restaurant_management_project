@@ -1,9 +1,6 @@
 from django.urls import path
-from .views import DailySpecialsView
+from .views import CreateUserReviewView
 
 urlpatterns = [
-    path('daily-specials/', DailySpecialsView.as_view(), name='daily-specials'),
-]
-urlpatterns = [
-    path('menu/featured/', FeaturedMenuItemsView.as_view(), name='featured-menu-items'),
+        path('reviews/create/', CreateReviewView.as_view(), name='create-review'),
 ]

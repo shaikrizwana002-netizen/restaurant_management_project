@@ -1,20 +1,15 @@
-from rest_framework.views import APIView
+from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import MenuItem
-from .serializers import DailySpecialSerializer
+from .models import Review
+from .serializers import ReviewSerializer
 
-class DailySpecialsView(APIView):
-    def get(self, request):
-        specials = MenuItem.objects.filter(is_daily_special=True)
-        serializer = DailySpecialSerializer(specials, many=True)
-        return Response(serializer.data)
+class CreateReviewView(generics.CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
 
-class MenuItemIngredientsView(RetrieveAPIView):
-    queryset = MenuItem.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        menu_item = self.get_object()
-        ingredients = menu_item.ingredients.all()
-        serializer = IngredientSerializer(ingredients, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Review created successfully.', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
